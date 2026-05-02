@@ -23,41 +23,41 @@ export function generateFarmEvent(gameState: GameState): EventDraft {
   if (metrics.averageMoisture < 38 || lowestMoisture.moisture < 28) {
     return {
       type: 'ai',
-      message: `AI Advisor detected low moisture in plot ${lowestMoisture.name}. Irrigation should be prioritized.`,
+      message: `El Asesor IA detectó baja humedad en ${lowestMoisture.name}. Priorizá riego.`,
     }
   }
 
   if (metrics.averagePestLevel > 36 || highestPest.pestLevel > 55) {
     return {
       type: 'warning',
-      message: `Pest risk is climbing near plot ${highestPest.name}. Dispatch pest control before crop health drops.`,
+      message: `Sube el riesgo de plaga en ${highestPest.name}. Enviá control antes de perder salud.`,
     }
   }
 
   if (gameState.resources.energy < 22) {
     return {
       type: 'warning',
-      message: 'Energy reserves are low. Let drones recharge or upgrade the control center for better recovery.',
+      message: 'La energía está baja. Dejá cargar los drones o mejorá el centro.',
     }
   }
 
   if (metrics.readyPlots > 0) {
     return {
       type: 'success',
-      message: `${metrics.readyPlots} wheat plot${metrics.readyPlots > 1 ? 's are' : ' is'} ready for harvest.`,
+      message: `${metrics.readyPlots} parcela${metrics.readyPlots > 1 ? 's listas' : ' lista'} para cosechar.`,
     }
   }
 
   if (gameState.resources.agriData > 80) {
     return {
       type: 'ai',
-      message: 'The data lake is rich enough for upgrades. Drone efficiency has the best short-term payoff.',
+      message: 'Hay datos suficientes para invertir. Eficiencia de drones rinde rápido.',
     }
   }
 
   return {
     type: 'info',
-    message: `Telemetry sweep complete. Average crop health is ${Math.round(metrics.averageHealth)}%.`,
+    message: `Lectura completa. Salud promedio del cultivo: ${Math.round(metrics.averageHealth)}%.`,
   }
 }
 
@@ -67,30 +67,30 @@ export function generateAdvisorRecommendation(gameState: GameState): string {
   const highestPest = getHighestPestPlot(gameState.plots)
 
   if (metrics.averageMoisture < 42 || lowestMoisture.moisture < 30) {
-    return `Prioritize irrigation on ${lowestMoisture.name}. Moisture is the main growth bottleneck right now.`
+    return `Regá ${lowestMoisture.name}. La humedad es el mayor freno del crecimiento ahora.`
   }
 
   if (metrics.averagePestLevel > 34 || highestPest.pestLevel > 52) {
-    return `Send pest control to ${highestPest.name}. Reducing pest pressure will protect the next harvest cycle.`
+    return `Mandá control de plaga a ${highestPest.name}. Protege la próxima cosecha.`
   }
 
   if (gameState.resources.energy < 25) {
-    return 'Energy is constrained. Wait for recovery before chaining actions, then consider upgrading the control center.'
+    return 'La energía está justa. Esperá recuperación y luego mejorá el centro.'
   }
 
   if (metrics.readyPlots > 0) {
-    return `Harvest ${metrics.readyPlots} ready plot${metrics.readyPlots > 1 ? 's' : ''} before growth time is wasted.`
+    return `Cosechá ${metrics.readyPlots} parcela${metrics.readyPlots > 1 ? 's' : ''} lista${metrics.readyPlots > 1 ? 's' : ''}.`
   }
 
   if (gameState.resources.agriData >= 50 && gameState.resources.money >= 120) {
-    return 'You have enough data to make upgrades meaningful. Efficiency upgrades will amplify every drone action.'
+    return 'Tenés datos y dinero. Mejorar eficiencia potencia todas las acciones.'
   }
 
   if (gameState.resources.crops >= 80) {
-    return 'Crop reserves are healthy. Push toward auto harvest to turn mature plots into steady cash flow.'
+    return 'La reserva de cosecha está bien. Apuntá a cosecha automática.'
   }
 
-  return 'Field conditions are balanced. Scan one more plot, then invest in battery capacity for longer action chains.'
+  return 'El campo está equilibrado. Escaneá una parcela y subí batería.'
 }
 
 export async function generateOpenAIRecommendation(_gameState: GameState): Promise<string> {
@@ -99,6 +99,6 @@ export async function generateOpenAIRecommendation(_gameState: GameState): Promi
   }
 
   return Promise.resolve(
-    'OpenAI adapter placeholder: move this request to a backend before enabling real production calls.',
+    'Adaptador OpenAI listo: mover esta llamada a backend antes de activar producción.',
   )
 }

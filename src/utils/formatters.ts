@@ -2,10 +2,10 @@ import type { ResourceCost, ResourceKey } from '../types/game'
 
 const resourceLabels: Record<ResourceKey, string> = {
   money: '$',
-  crops: 'crops',
-  water: 'water',
-  energy: 'energy',
-  agriData: 'data',
+  crops: 'cosecha',
+  water: 'agua',
+  energy: 'energía',
+  agriData: 'datos',
 }
 
 export function formatNumber(value: number): string {
@@ -28,6 +28,10 @@ export function formatCost(cost: ResourceCost): string {
     .filter(([, value]) => value > 0)
     .map(([key, value]) => `${resourceLabels[key]} ${formatNumber(value)}`)
     .join(' + ')
+}
+
+export function formatResourceName(key: ResourceKey): string {
+  return resourceLabels[key]
 }
 
 export function formatTimestamp(timestamp: number): string {

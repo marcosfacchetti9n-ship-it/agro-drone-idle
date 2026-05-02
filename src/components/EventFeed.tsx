@@ -5,10 +5,10 @@ import type { EventType } from '../types/game'
 import { formatTimestamp } from '../utils/formatters'
 
 const eventStyles: Record<EventType, string> = {
-  info: 'border-slate-700/70 bg-slate-950/70 text-slate-300',
-  warning: 'border-amber-300/25 bg-amber-400/10 text-amber-100',
-  success: 'border-emerald-300/20 bg-emerald-400/10 text-emerald-100',
-  ai: 'border-cyan-300/20 bg-cyan-400/10 text-cyan-100',
+  info: 'border-slate-200 bg-white text-slate-600',
+  warning: 'border-amber-200 bg-amber-50 text-amber-800',
+  success: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+  ai: 'border-cyan-200 bg-cyan-50 text-cyan-800',
 }
 
 const eventIcons: Record<EventType, typeof Info> = {
@@ -18,32 +18,39 @@ const eventIcons: Record<EventType, typeof Info> = {
   ai: BrainCircuit,
 }
 
+const eventLabels: Record<EventType, string> = {
+  info: 'info',
+  warning: 'alerta',
+  success: 'logro',
+  ai: 'ia',
+}
+
 export function EventFeed() {
   const events = useGameStore((state) => state.events)
 
   return (
-    <section className="panel flex max-h-[510px] flex-col p-4">
-      <div className="mb-4 flex items-center justify-between">
+    <section className="panel flex flex-col p-3 xl:col-start-3 xl:row-start-2">
+      <div className="mb-2 flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase text-slate-500">Event feed</p>
-          <h2 className="text-xl font-semibold text-white">Recent telemetry</h2>
+          <p className="text-[10px] font-bold uppercase text-sky-600">Eventos</p>
+          <h2 className="text-lg font-black text-slate-950">Bitácora</h2>
         </div>
-        <Activity className="h-5 w-5 text-emerald-200" aria-hidden="true" />
+        <Activity className="h-5 w-5 text-sky-600" aria-hidden="true" />
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto pr-1">
-        {events.map((event) => {
+        {events.slice(0, 8).map((event) => {
           const Icon = eventIcons[event.type]
           return (
-            <article key={event.id} className={clsx('rounded-lg border p-3', eventStyles[event.type])}>
-              <div className="mb-1 flex items-center justify-between gap-2 text-[11px] uppercase text-slate-500">
+            <article key={event.id} className={clsx('rounded-2xl border px-2.5 py-2', eventStyles[event.type])}>
+              <div className="mb-0.5 flex items-center justify-between gap-2 text-[10px] font-bold uppercase text-slate-400">
                 <span className="inline-flex items-center gap-1">
                   <Icon className="h-3.5 w-3.5" aria-hidden="true" />
-                  {event.type}
+                  {eventLabels[event.type]}
                 </span>
                 <time>{formatTimestamp(event.timestamp)}</time>
               </div>
-              <p className="text-sm leading-5">{event.message}</p>
+              <p className="line-clamp-2 text-xs leading-4">{event.message}</p>
             </article>
           )
         })}

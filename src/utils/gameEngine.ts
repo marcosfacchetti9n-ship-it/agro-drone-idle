@@ -29,12 +29,13 @@ import {
   isDroneAvailable,
   spendResources,
 } from './calculations'
+import { formatResourceName } from './formatters'
 
 const actionLabels: Record<FarmAction, string> = {
-  scan: 'scan',
-  water: 'irrigation',
-  pestControl: 'pest control',
-  harvest: 'harvest',
+  scan: 'escaneo',
+  water: 'riego',
+  pestControl: 'control de plaga',
+  harvest: 'cosecha',
 }
 
 const droneStatusByAction: Record<FarmAction, Drone['status']> = {
@@ -79,7 +80,7 @@ function updatePlot(plots: Plot[], plotId: string, updater: (plot: Plot) => Plot
 }
 
 function createDroneName(index: number): string {
-  return `Drone-${String(index).padStart(2, '0')}`
+  return `Dron-${String(index).padStart(2, '0')}`
 }
 
 export function createDrone(index: number): Drone {
@@ -110,7 +111,7 @@ export function performDroneAction(
     return {
       ...state,
       events: appendEvents(state.events, [
-        { type: 'warning', message: 'Select a plot before dispatching a drone.' },
+        { type: 'warning', message: 'Elegí una parcela antes de enviar un dron.' },
       ]),
     }
   }
@@ -118,7 +119,7 @@ export function performDroneAction(
   if (!drone) {
     return {
       ...state,
-      events: appendEvents(state.events, [{ type: 'warning', message: 'Drone not found in fleet.' }]),
+      events: appendEvents(state.events, [{ type: 'warning', message: 'No se encontró ese dron.' }]),
     }
   }
 
@@ -126,7 +127,7 @@ export function performDroneAction(
     return {
       ...state,
       events: appendEvents(state.events, [
-        { type: 'warning', message: `${drone.name} is finishing its current task.` },
+        { type: 'warning', message: `${drone.name} está terminando su tarea.` },
       ]),
     }
   }
@@ -136,7 +137,7 @@ export function performDroneAction(
     return {
       ...state,
       events: appendEvents(state.events, [
-        { type: 'warning', message: `${drone.name} needs more battery for ${actionLabels[action]}.` },
+        { type: 'warning', message: `${drone.name} necesita más batería para ${actionLabels[action]}.` },
       ]),
     }
   }
@@ -147,7 +148,7 @@ export function performDroneAction(
     return {
       ...state,
       events: appendEvents(state.events, [
-        { type: 'warning', message: `Not enough ${shortage} to run ${actionLabels[action]}.` },
+        { type: 'warning', message: `Falta ${formatResourceName(shortage)} para ${actionLabels[action]}.` },
       ]),
     }
   }
@@ -156,7 +157,7 @@ export function performDroneAction(
     return {
       ...state,
       events: appendEvents(state.events, [
-        { type: 'warning', message: `Plot ${plot.name} needs at least 85% growth before harvest.` },
+        { type: 'warning', message: `${plot.name} necesita 85% de crecimiento para cosechar.` },
       ]),
     }
   }
@@ -170,7 +171,7 @@ export function performDroneAction(
       resources = addResources(resources, { agriData: Math.round(10 * multiplier) })
       event = {
         type: 'success',
-        message: `${drone.name} scanned plot ${currentPlot.name} and generated field data.`,
+        message: `${drone.name} escaneó ${currentPlot.name} y generó datos.`,
       }
       return {
         ...currentPlot,
@@ -183,7 +184,7 @@ export function performDroneAction(
     if (action === 'water') {
       event = {
         type: 'success',
-        message: `${drone.name} irrigated plot ${currentPlot.name}. Moisture levels improved.`,
+        message: `${drone.name} regó ${currentPlot.name}. La humedad subió.`,
       }
       return {
         ...currentPlot,
@@ -196,7 +197,7 @@ export function performDroneAction(
     if (action === 'pestControl') {
       event = {
         type: 'success',
-        message: `${drone.name} reduced pest pressure on plot ${currentPlot.name}.`,
+        message: `${drone.name} redujo plagas en ${currentPlot.name}.`,
       }
       return {
         ...currentPlot,
@@ -213,7 +214,7 @@ export function performDroneAction(
     })
     event = {
       type: 'success',
-      message: `${drone.name} harvested ${yieldResult.crops} crops from plot ${currentPlot.name}.`,
+      message: `${drone.name} cosechó ${yieldResult.crops} unidades en ${currentPlot.name}.`,
     }
     return {
       ...currentPlot,
@@ -297,7 +298,7 @@ export function runAutomation(state: GameState): AutomationResult {
       }))
       eventDrafts.push({
         type: 'info',
-        message: `Auto irrigation corrected low moisture on plot ${target.name}.`,
+        message: `Riego automático corrigió baja humedad en ${target.name}.`,
       })
     }
   }
@@ -306,7 +307,7 @@ export function runAutomation(state: GameState): AutomationResult {
     resources = addResources(resources, { agriData: 5 + state.controlCenterLevel * 2 })
     eventDrafts.push({
       type: 'ai',
-      message: 'Auto scanning uploaded a fresh crop telemetry packet.',
+      message: 'Escaneo automático subió nuevos datos del cultivo.',
     })
   }
 
@@ -327,7 +328,7 @@ export function runAutomation(state: GameState): AutomationResult {
       }))
       eventDrafts.push({
         type: 'success',
-        message: `Auto harvest collected ${yieldResult.crops} crops from plot ${target.name}.`,
+        message: `Cosecha automática recolectó ${yieldResult.crops} unidades en ${target.name}.`,
       })
     }
   }

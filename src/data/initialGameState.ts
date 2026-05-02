@@ -17,7 +17,7 @@ export function createInitialPlots(): Plot[] {
   return initialPlots.map((plot) => ({
     id: `plot-${plot.name.toLowerCase()}`,
     name: plot.name,
-    cropType: 'Wheat',
+    cropType: 'Trigo',
     cropHealth: plot.cropHealth,
     moisture: plot.moisture,
     pestLevel: plot.pestLevel,
@@ -41,7 +41,7 @@ export function createInitialGameState(): GameState {
     drones: [
       {
         id: 'drone-1',
-        name: 'Scout-01',
+        name: 'Explorador-01',
         type: 'hybrid',
         level: 1,
         battery: 100,
@@ -55,12 +55,12 @@ export function createInitialGameState(): GameState {
       {
         id: `event-${now}`,
         type: 'info',
-        message: 'Control station online. Scout-01 is ready for field operations.',
+        message: 'Estación online. Explorador-01 listo para operar el campo.',
         timestamp: now,
       },
     ],
     advisorRecommendation:
-      'Baseline telemetry is stable. Start by scanning B2, then water any plot below 45% moisture.',
+      'La telemetría inicial está estable. Escaneá B2 y regá parcelas debajo de 45% de humedad.',
     controlCenterLevel: 1,
     automation: {
       watering: false,

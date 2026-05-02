@@ -5,35 +5,35 @@ type UpgradeCopy = Omit<Upgrade, 'id' | 'cost' | 'level' | 'unlocked'>
 
 export const UPGRADE_COPY: Record<UpgradeId, UpgradeCopy> = {
   newDrone: {
-    name: 'New drone',
-    description: 'Adds another autonomous unit to the fleet.',
+    name: 'Nuevo dron',
+    description: 'Suma una unidad a la flota.',
   },
   droneEfficiency: {
-    name: 'Drone efficiency',
-    description: 'Improves every drone action impact.',
+    name: 'Eficiencia',
+    description: 'Mejora el impacto de cada acción.',
     maxLevel: MAX_UPGRADE_LEVELS.droneEfficiency,
   },
   droneBattery: {
-    name: 'Battery cells',
-    description: 'Increases max battery and action uptime.',
+    name: 'Batería',
+    description: 'Más autonomía para operar.',
     maxLevel: MAX_UPGRADE_LEVELS.droneBattery,
   },
   controlCenter: {
-    name: 'Control center',
-    description: 'Boosts growth analytics, storage and resource recovery.',
+    name: 'Centro',
+    description: 'Mejora análisis y recuperación.',
     maxLevel: MAX_UPGRADE_LEVELS.controlCenter,
   },
   autoWatering: {
-    name: 'Auto irrigation',
-    description: 'Periodically waters the driest plot.',
+    name: 'Riego auto',
+    description: 'Riega la parcela más seca.',
   },
   autoScanning: {
-    name: 'Auto scanning',
-    description: 'Generates agricultural data on a schedule.',
+    name: 'Escaneo auto',
+    description: 'Genera datos cada cierto tiempo.',
   },
   autoHarvesting: {
-    name: 'Auto harvest',
-    description: 'Harvests ready plots without manual input.',
+    name: 'Cosecha auto',
+    description: 'Cosecha parcelas listas.',
   },
 }
 

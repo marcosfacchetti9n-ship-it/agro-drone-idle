@@ -15,12 +15,19 @@ interface DroneCardProps {
 }
 
 const statusLabels: Record<Drone['status'], string> = {
-  idle: 'Idle',
-  scanning: 'Scanning',
-  watering: 'Watering',
-  harvesting: 'Harvesting',
-  pest_control: 'Pest control',
-  charging: 'Charging',
+  idle: 'Libre',
+  scanning: 'Escanea',
+  watering: 'Riega',
+  harvesting: 'Cosecha',
+  pest_control: 'Plaga',
+  charging: 'Carga',
+}
+
+const typeLabels: Record<Drone['type'], string> = {
+  scout: 'explorador',
+  irrigation: 'riego',
+  harvester: 'cosecha',
+  hybrid: 'híbrido',
 }
 
 function batteryWidth(drone: Drone): string {
@@ -28,10 +35,10 @@ function batteryWidth(drone: Drone): string {
 }
 
 function getActionHint(drone: Drone, selectedPlot?: Plot): string {
-  if (!selectedPlot) return 'Select a plot to dispatch this unit.'
-  if (!isDroneAvailable(drone)) return 'Task finishing. Ready on the next tick.'
-  if (selectedPlot.growth < 85) return 'Harvest unlocks at 85% growth; other tasks stay available.'
-  return 'Ready for scan, irrigation, pest control or harvest.'
+  if (!selectedPlot) return 'Elegí una parcela.'
+  if (!isDroneAvailable(drone)) return 'Tarea en curso.'
+  if (selectedPlot.growth < 85) return 'Cosecha desde 85%.'
+  return 'Listo para operar.'
 }
 
 export function DroneCard({
@@ -55,36 +62,36 @@ export function DroneCard({
   const canHarvest = canRun('harvest') && Boolean(selectedPlot && selectedPlot.growth >= 85)
 
   return (
-    <article className="rounded-lg border border-slate-700/70 bg-slate-950/70 p-3">
-      <div className="mb-3 flex items-start justify-between gap-3">
+    <article className="rounded-2xl border border-white bg-white/80 p-2.5 shadow-sm">
+      <div className="mb-2 flex items-start justify-between gap-2">
         <div>
-          <h3 className="font-semibold text-white">{drone.name}</h3>
-          <p className="text-xs capitalize text-slate-500">
-            {drone.type} | Lv. {drone.level} | {formatPercent(drone.efficiency)}
+          <h3 className="font-black text-slate-950">{drone.name}</h3>
+          <p className="text-[11px] capitalize text-slate-500">
+            {typeLabels[drone.type]} | Nv. {drone.level} | {formatPercent(drone.efficiency)}
           </p>
         </div>
-        <span className="rounded border border-cyan-300/20 bg-cyan-400/10 px-2 py-1 text-[11px] text-cyan-100">
+        <span className="rounded-full border border-cyan-200 bg-cyan-50 px-2 py-0.5 text-[10px] font-bold text-cyan-700">
           {statusLabels[drone.status]}
         </span>
       </div>
 
-      <div className="mb-3">
-        <div className="mb-1 flex justify-between text-xs text-slate-400">
-          <span>Battery</span>
+      <div className="mb-2">
+        <div className="mb-1 flex justify-between text-[11px] font-semibold text-slate-500">
+          <span>Batería</span>
           <span>
             {Math.round(drone.battery)}/{drone.maxBattery}
           </span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-slate-800">
-          <div className="h-full rounded-full bg-amber-300" style={{ width: batteryWidth(drone) }} />
+        <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+          <div className="h-full rounded-full bg-amber-400" style={{ width: batteryWidth(drone) }} />
         </div>
       </div>
 
       <div className="grid grid-cols-4 gap-2">
         <button
           type="button"
-          title="Scan plot"
-          aria-label="Scan plot"
+          title="Escanear parcela"
+          aria-label="Escanear parcela"
           disabled={!canScan}
           onClick={onScan}
           className="drone-action"
@@ -93,8 +100,8 @@ export function DroneCard({
         </button>
         <button
           type="button"
-          title="Water plot"
-          aria-label="Water plot"
+          title="Regar parcela"
+          aria-label="Regar parcela"
           disabled={!canWater}
           onClick={onWater}
           className="drone-action"
@@ -103,8 +110,8 @@ export function DroneCard({
         </button>
         <button
           type="button"
-          title="Control pest"
-          aria-label="Control pest"
+          title="Controlar plaga"
+          aria-label="Controlar plaga"
           disabled={!canPest}
           onClick={onPestControl}
           className="drone-action"
@@ -113,8 +120,8 @@ export function DroneCard({
         </button>
         <button
           type="button"
-          title="Harvest plot"
-          aria-label="Harvest plot"
+          title="Cosechar parcela"
+          aria-label="Cosechar parcela"
           disabled={!canHarvest}
           onClick={onHarvest}
           className="drone-action"
@@ -123,7 +130,7 @@ export function DroneCard({
         </button>
       </div>
 
-      <div className="mt-3 flex items-center gap-2 text-xs text-slate-500">
+      <div className="mt-2 flex items-center gap-2 text-[11px] font-medium text-slate-500">
         <BatteryCharging className="h-3.5 w-3.5" aria-hidden="true" />
         {getActionHint(drone, selectedPlot)}
       </div>

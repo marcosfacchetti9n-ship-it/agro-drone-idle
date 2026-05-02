@@ -29,6 +29,7 @@ import {
   getWaterCap,
   spendResources,
 } from '../utils/calculations'
+import { formatResourceName } from '../utils/formatters'
 
 interface GameStore extends GameState {
   selectPlot: (plotId: string) => void
@@ -49,6 +50,12 @@ interface GameStore extends GameState {
 
 const bootState = loadGameState() ?? createInitialGameState()
 
+const automationLabels: Record<AutomationKey, string> = {
+  watering: 'riego',
+  scanning: 'escaneo',
+  harvesting: 'cosecha',
+}
+
 export const useGameStore = create<GameStore>((set) => ({
   ...bootState,
 
@@ -67,7 +74,7 @@ export const useGameStore = create<GameStore>((set) => ({
         return {
           ...state,
           events: appendEvents(state.events, [
-            { type: 'warning', message: `Not enough ${shortage} to buy a new drone.` },
+            { type: 'warning', message: `Falta ${formatResourceName(shortage)} para comprar un dron.` },
           ]),
         }
       }
@@ -86,7 +93,7 @@ export const useGameStore = create<GameStore>((set) => ({
         drones: [...state.drones, drone],
         upgradeCosts,
         events: appendEvents(state.events, [
-          { type: 'success', message: `${drone.name} joined the fleet as a ${drone.type} unit.` },
+          { type: 'success', message: `${drone.name} se sumó a la flota.` },
         ]),
       }
     }),
@@ -98,7 +105,7 @@ export const useGameStore = create<GameStore>((set) => ({
         return {
           ...state,
           events: appendEvents(state.events, [
-            { type: 'info', message: 'Drone efficiency is already at maximum level.' },
+            { type: 'info', message: 'La eficiencia ya está al máximo.' },
           ]),
         }
       }
@@ -108,7 +115,7 @@ export const useGameStore = create<GameStore>((set) => ({
         return {
           ...state,
           events: appendEvents(state.events, [
-            { type: 'warning', message: `Not enough ${shortage} for drone efficiency.` },
+            { type: 'warning', message: `Falta ${formatResourceName(shortage)} para mejorar eficiencia.` },
           ]),
         }
       }
@@ -135,7 +142,7 @@ export const useGameStore = create<GameStore>((set) => ({
         upgradeLevels,
         upgradeCosts,
         events: appendEvents(state.events, [
-          { type: 'success', message: 'Fleet efficiency upgraded across all drones.' },
+          { type: 'success', message: 'Eficiencia mejorada en toda la flota.' },
         ]),
       }
     }),
@@ -147,7 +154,7 @@ export const useGameStore = create<GameStore>((set) => ({
         return {
           ...state,
           events: appendEvents(state.events, [
-            { type: 'info', message: 'Battery cells are already at maximum level.' },
+            { type: 'info', message: 'Las baterías ya están al máximo.' },
           ]),
         }
       }
@@ -157,7 +164,7 @@ export const useGameStore = create<GameStore>((set) => ({
         return {
           ...state,
           events: appendEvents(state.events, [
-            { type: 'warning', message: `Not enough ${shortage} for battery cells.` },
+            { type: 'warning', message: `Falta ${formatResourceName(shortage)} para mejorar batería.` },
           ]),
         }
       }
@@ -184,7 +191,7 @@ export const useGameStore = create<GameStore>((set) => ({
         upgradeLevels,
         upgradeCosts,
         events: appendEvents(state.events, [
-          { type: 'success', message: 'Battery capacity increased for the full fleet.' },
+          { type: 'success', message: 'Batería aumentada en toda la flota.' },
         ]),
       }
     }),
@@ -196,7 +203,7 @@ export const useGameStore = create<GameStore>((set) => ({
         return {
           ...state,
           events: appendEvents(state.events, [
-            { type: 'info', message: 'Control center is already at maximum level.' },
+            { type: 'info', message: 'El centro ya está al máximo.' },
           ]),
         }
       }
@@ -206,7 +213,7 @@ export const useGameStore = create<GameStore>((set) => ({
         return {
           ...state,
           events: appendEvents(state.events, [
-            { type: 'warning', message: `Not enough ${shortage} for control center upgrade.` },
+            { type: 'warning', message: `Falta ${formatResourceName(shortage)} para mejorar el centro.` },
           ]),
         }
       }
@@ -229,7 +236,7 @@ export const useGameStore = create<GameStore>((set) => ({
         upgradeLevels,
         upgradeCosts,
         events: appendEvents(state.events, [
-          { type: 'success', message: `Control center upgraded to level ${controlCenterLevel}.` },
+          { type: 'success', message: `Centro mejorado a nivel ${controlCenterLevel}.` },
         ]),
       }
     }),
@@ -240,7 +247,7 @@ export const useGameStore = create<GameStore>((set) => ({
         return {
           ...state,
           events: appendEvents(state.events, [
-            { type: 'info', message: 'That automation module is already online.' },
+            { type: 'info', message: 'Esa automatización ya está activa.' },
           ]),
         }
       }
@@ -257,7 +264,7 @@ export const useGameStore = create<GameStore>((set) => ({
         return {
           ...state,
           events: appendEvents(state.events, [
-            { type: 'warning', message: `Not enough ${shortage} to unlock automation.` },
+            { type: 'warning', message: `Falta ${formatResourceName(shortage)} para activar automatización.` },
           ]),
         }
       }
@@ -270,7 +277,7 @@ export const useGameStore = create<GameStore>((set) => ({
           [automation]: true,
         },
         events: appendEvents(state.events, [
-          { type: 'success', message: `${automation} automation is now online.` },
+          { type: 'success', message: `Automatización de ${automationLabels[automation]} activada.` },
         ]),
       }
     }),
@@ -282,7 +289,7 @@ export const useGameStore = create<GameStore>((set) => ({
         ...state,
         advisorRecommendation,
         events: appendEvents(state.events, [
-          { type: 'ai', message: `AI Advisor: ${advisorRecommendation}` },
+          { type: 'ai', message: `Asesor IA: ${advisorRecommendation}` },
         ]),
       }
     }),
@@ -344,7 +351,7 @@ export const useGameStore = create<GameStore>((set) => ({
         nextState.marketBoostTicksRemaining = 60
         eventDrafts.push({
           type: 'success',
-          message: 'Wheat demand increased. Harvest sales are worth 10% more for 60 seconds.',
+          message: 'Subió la demanda de trigo. Ventas +10% por 60 segundos.',
         })
       }
 

@@ -7,18 +7,18 @@ interface AdvisorPanelProps {
 
 export function AdvisorPanel({ recommendation }: AdvisorPanelProps) {
   return (
-    <div className="rounded-lg border border-cyan-300/15 bg-cyan-400/10 p-4">
-      <div className="mb-3 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-sm font-semibold text-cyan-100">
+    <div className="rounded-2xl border border-cyan-200 bg-cyan-50 p-3">
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 text-sm font-bold text-cyan-800">
           <BrainCircuit className="h-4 w-4" aria-hidden="true" />
-          AI Farm Advisor
+          Asesor IA
         </div>
-        <div className="inline-flex items-center gap-1 rounded border border-cyan-300/20 px-2 py-1 text-[11px] text-cyan-100">
+        <div className="inline-flex items-center gap-1 rounded-full border border-cyan-200 bg-white/70 px-2 py-1 text-[10px] font-bold text-cyan-700">
           <Cpu className="h-3.5 w-3.5" aria-hidden="true" />
-          {isOpenAIConfigured() ? 'API ready' : 'Mock mode'}
+          {isOpenAIConfigured() ? 'API lista' : 'Simulado'}
         </div>
       </div>
-      <p className="text-sm leading-6 text-slate-200">{recommendation}</p>
+      <p className="line-clamp-4 text-sm leading-5 text-slate-700">{recommendation}</p>
     </div>
   )
 }

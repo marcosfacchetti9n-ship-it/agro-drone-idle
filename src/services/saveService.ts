@@ -2,7 +2,7 @@ import type { GameState } from '../types/game'
 import { createInitialGameState } from '../data/initialGameState'
 
 const SAVE_KEY = 'agro-drone-idle-save'
-const SAVE_VERSION = 1
+const SAVE_VERSION = 2
 
 interface SavePayload {
   version: number

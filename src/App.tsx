@@ -31,19 +31,14 @@ function App() {
   }, [])
 
   return (
-    <div className="min-h-screen text-slate-100">
+    <div className="h-dvh overflow-hidden text-slate-900">
       <Header />
-      <main className="mx-auto flex w-full max-w-[1800px] flex-col gap-4 p-4 md:p-6">
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-[320px_minmax(0,1fr)_360px]">
-          <OperatorStation />
-          <FieldGrid />
-          <DronePanel />
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 2xl:grid-cols-[minmax(0,1fr)_420px]">
-          <UpgradePanel />
-          <EventFeed />
-        </div>
+      <main className="mx-auto grid h-[calc(100dvh-76px)] w-full max-w-[1780px] grid-cols-1 grid-rows-none gap-3 overflow-y-auto p-3 xl:grid-cols-[280px_minmax(0,1fr)_330px] xl:grid-rows-[minmax(0,1fr)_176px] xl:overflow-hidden">
+        <OperatorStation />
+        <FieldGrid />
+        <DronePanel />
+        <UpgradePanel />
+        <EventFeed />
       </main>
     </div>
   )

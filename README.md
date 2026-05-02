@@ -1,23 +1,24 @@
 # AgroDrone Idle
 
-AgroDrone Idle is a browser-based idle/incremental game where the player manages a smart farm from a control station, deploying drones to scan crops, manage irrigation, control pests and optimize production with an AI-powered advisor.
+AgroDrone Idle es un juego web idle/incremental donde el jugador gestiona una granja inteligente desde una estación de control, enviando drones para escanear cultivos, regar parcelas, controlar plagas y optimizar la producción con ayuda de un asesor IA.
 
-## Screenshots
+## Capturas
 
-Screenshots can be added here after running the app locally or deploying the MVP.
+Sección preparada para agregar capturas del panel principal una vez desplegado.
 
-## Features
+## Características
 
-- Futuristic agricultural dashboard UI with resource indicators, operator station, field grid, drone fleet, upgrades and event feed.
-- Idle loop that advances crop growth, moisture, pest pressure, passive income, drone battery recovery and automation every second.
-- 3x3 wheat field with selectable plots, health, moisture, pest and growth telemetry.
-- Drone actions for scanning, watering, pest control and harvesting, with energy, water, money and battery costs.
-- Incremental upgrades for new drones, fleet efficiency, batteries, control center and automation modules.
-- LocalStorage autosave, automatic load on startup and reset with confirmation.
-- Mock AI events and advisor recommendations based on the real game state.
-- API-ready AI service prepared for future OpenAI integration through `VITE_OPENAI_API_KEY`.
+- Interfaz en español, minimalista y visual, pensada como una cabina agrícola de una sola pantalla.
+- Recursos visibles: dinero, cosecha, agua, energía y datos agrícolas.
+- Mapa 3x3 de parcelas con salud, humedad, plagas y crecimiento.
+- Drones con acciones claras: escanear, regar, controlar plaga y cosechar.
+- Bucle idle por segundo con crecimiento, degradación de humedad, presión de plagas, ingreso pasivo y recuperación de batería.
+- Mejoras compactas para comprar drones, subir eficiencia, batería, centro de control y automatizaciones.
+- Eventos y recomendaciones del Asesor IA en modo simulado.
+- Guardado automático en LocalStorage, carga al iniciar y reinicio con confirmación.
+- Estructura preparada para conectar OpenAI más adelante mediante `VITE_OPENAI_API_KEY`.
 
-## Stack
+## Tecnologías
 
 - React
 - TypeScript
@@ -27,89 +28,75 @@ Screenshots can be added here after running the app locally or deploying the MVP
 - LocalStorage
 - lucide-react
 
-## Run Locally
+## Correr Localmente
 
 ```bash
 npm install
 npm run dev
 ```
 
-The development server will print a local URL, usually `http://localhost:5173`.
+El servidor de desarrollo imprime una URL local, normalmente `http://localhost:5173`.
 
-To verify a production build:
+Para verificar compilación de producción:
 
 ```bash
 npm run build
 ```
 
-To run static checks:
+Para correr revisión de código:
 
 ```bash
 npm run lint
 ```
 
-## Gameplay Loop
+## Variables De Entorno
 
-- Plots grow faster when crop health and moisture are high and pest pressure is low.
-- Drones consume battery and resources when dispatched, then recover battery while idle or charging.
-- The farm earns small passive money from productive field conditions.
-- Automation modules add scheduled irrigation, scanning and harvesting once unlocked.
-- AI mock events and advisor recommendations react to the current state of the field.
-
-## Architecture Notes
-
-- `src/store/gameStore.ts` owns player-facing state and dispatchable actions.
-- Pure simulation, balance and calculation helpers live in `src/utils`.
-- `src/utils/gameEngine.ts` contains the idle tick, drone action and automation logic.
-- Initial state and upgrade copy live in `src/data`.
-- UI components are split by dashboard panel and reusable cards.
-- Save/load is isolated in `src/services/saveService.ts` so storage can be swapped later.
-
-## Environment Variables
-
-Copy `.env.example` to `.env` if you want to experiment with future API wiring.
+Copiar `.env.example` a `.env` si se quiere experimentar con la futura conexión de IA.
 
 ```bash
 VITE_OPENAI_API_KEY=
 ```
 
-The current MVP runs in mock mode by default and does not require an API key.
+El MVP funciona sin API key porque usa IA simulada por defecto.
 
-## AI Mock and API-Ready Structure
+## Bucle De Juego
 
-AI logic lives in `src/services/aiService.ts`.
+- Las parcelas crecen mejor con buena salud, humedad suficiente y baja plaga.
+- Las acciones de drones consumen batería y recursos.
+- Los drones recuperan batería cuando están libres o cargando.
+- El campo genera dinero pasivo según su estado productivo.
+- Las automatizaciones ejecutan riego, escaneo y cosecha en intervalos simples.
+- El Asesor IA analiza el estado real y sugiere prioridades.
 
-- `generateFarmEvent(gameState)` creates mock AI events from real field metrics.
-- `generateAdvisorRecommendation(gameState)` returns recommendations based on moisture, pests, energy, crops and agriData.
-- `generateOpenAIRecommendation(gameState)` is a protected placeholder for future OpenAI integration.
+## Arquitectura
 
-For production, real OpenAI calls should be moved to a backend so private API keys are never exposed in the browser.
+- `src/store/gameStore.ts` organiza estado global y acciones del jugador.
+- `src/utils/gameEngine.ts` contiene simulación, acciones de drones y automatización.
+- `src/utils` guarda cálculos, balance y formateadores.
+- `src/data` define estado inicial y textos de mejoras.
+- `src/services/aiService.ts` abstrae IA simulada y futuro adaptador OpenAI.
+- `src/services/saveService.ts` aísla persistencia local.
+- `src/components` contiene paneles y tarjetas de la interfaz.
 
-## Save System
+## IA Simulada Y Lista Para API
 
-Progress is stored in LocalStorage under a versioned payload. The app loads saved progress on startup, autosaves during play and flushes the latest state when the tab is hidden or closed.
+`aiService.ts` expone:
 
-## Project Structure
+- `generateFarmEvent(gameState)` para eventos inteligentes simulados.
+- `generateAdvisorRecommendation(gameState)` para recomendaciones basadas en humedad, plagas, energía, cosecha y datos.
+- `generateOpenAIRecommendation(gameState)` como marcador protegido para integración futura.
 
-```text
-src/
-  components/        UI panels and cards
-  data/              Initial game state and upgrade metadata
-  services/          AI and save services
-  store/             Zustand game store and actions
-  types/             Strong game domain types
-  utils/             Balance, calculations and formatters
-```
+Para producción, las llamadas reales a OpenAI deberían moverse a un backend para no exponer claves privadas en el navegador.
 
-## Roadmap
+## Próximos Pasos
 
-- Add crop variety unlocks and plot expansion.
-- Add richer event chains and temporary market modifiers.
-- Add offline progress calculation.
-- Move AI generation to a backend endpoint.
-- Add tests for balance calculations and save migration.
-- Add deployment config and portfolio screenshots.
+- Progreso sin conexión.
+- Más cultivos y expansión de parcelas.
+- Eventos de mercado más ricos.
+- Tests de balance y migraciones de guardado.
+- Backend liviano para IA real.
+- Despliegue público y capturas de portafolio.
 
-## Portfolio Value
+## Valor Para Portafolio
 
-This project demonstrates a polished frontend MVP with typed domain modeling, global state, autosave, incremental game logic, modular React components, responsive dashboard UI and a clean abstraction for AI-assisted gameplay.
+El proyecto demuestra modelado de dominio con TypeScript, estado global con Zustand, UI responsive con Tailwind, lógica incremental, persistencia local, arquitectura modular y una integración de IA preparada para evolucionar.

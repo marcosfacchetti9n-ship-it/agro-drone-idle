@@ -14,26 +14,26 @@ export function DronePanel() {
   const selectedPlot = plots.find((plot) => plot.id === selectedPlotId)
 
   return (
-    <aside className="panel flex flex-col gap-4 p-4">
+    <aside className="panel flex flex-col gap-3 p-3">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase text-slate-500">Drone fleet</p>
-          <h2 className="text-lg font-semibold text-white">Dispatch queue</h2>
+          <p className="text-[10px] font-bold uppercase text-cyan-600">Flota</p>
+          <h2 className="text-lg font-black text-slate-950">Drones</h2>
         </div>
-        <RadioTower className="h-5 w-5 text-cyan-200" aria-hidden="true" />
+        <RadioTower className="h-5 w-5 text-cyan-600" aria-hidden="true" />
       </div>
 
       {selectedPlot ? (
-        <div className="rounded-lg border border-emerald-300/15 bg-emerald-400/10 px-3 py-2 text-sm text-emerald-100">
-          Target plot: {selectedPlot.name} | Growth {Math.round(selectedPlot.growth)}%
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-800">
+          Objetivo: {selectedPlot.name} | {Math.round(selectedPlot.growth)}%
         </div>
       ) : (
-        <div className="rounded-lg border border-amber-300/20 bg-amber-400/10 px-3 py-2 text-sm text-amber-100">
-          Select a plot to enable drone actions.
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-bold text-amber-800">
+          Elegí una parcela.
         </div>
       )}
 
-      <div className="flex flex-col gap-3">
+      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto pr-1">
         {drones.map((drone) => (
           <DroneCard
             key={drone.id}

@@ -83,12 +83,12 @@ export function getFieldMetrics(plots: Plot[]): FieldMetrics {
 }
 
 export function getFieldStatus(metrics: FieldMetrics): string {
-  if (metrics.averageHealth < 45) return 'Critical crop stress'
-  if (metrics.highPestPlots >= 3) return 'Pest pressure rising'
-  if (metrics.lowMoisturePlots >= 3) return 'Irrigation priority'
-  if (metrics.readyPlots > 0) return 'Harvest window open'
-  if (metrics.averageHealth > 75 && metrics.averageMoisture > 45) return 'Stable and productive'
-  return 'Monitoring conditions'
+  if (metrics.averageHealth < 45) return 'Crítico'
+  if (metrics.highPestPlots >= 3) return 'Plagas'
+  if (metrics.lowMoisturePlots >= 3) return 'Regar'
+  if (metrics.readyPlots > 0) return 'Cosechar'
+  if (metrics.averageHealth > 75 && metrics.averageMoisture > 45) return 'Estable'
+  return 'Monitoreo'
 }
 
 export function calculateGrowthDelta(plot: Plot, controlCenterLevel: number): number {

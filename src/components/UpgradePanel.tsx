@@ -46,15 +46,15 @@ export function UpgradePanel() {
   }
 
   return (
-    <section className="panel p-4">
-      <div className="mb-4 flex items-center justify-between">
+    <section className="panel p-3 xl:col-start-2 xl:row-start-2">
+      <div className="mb-2 flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase text-slate-500">Upgrades</p>
-          <h2 className="text-xl font-semibold text-white">Operations budget</h2>
+          <p className="text-[10px] font-bold uppercase text-amber-600">Mejoras</p>
+          <h2 className="text-lg font-black text-slate-950">Tienda rápida</h2>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid min-h-0 grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-7">
         {upgrades.map((upgrade) => {
           const Icon = upgradeIcons[upgrade.id]
 

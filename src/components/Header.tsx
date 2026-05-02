@@ -9,70 +9,70 @@ export function Header() {
   const resetGame = useGameStore((state) => state.resetGame)
 
   function handleReset() {
-    if (window.confirm('Reset AgroDrone Idle progress? This cannot be undone.')) {
+    if (window.confirm('¿Reiniciar el progreso de AgroDrone Idle? Esta acción no se puede deshacer.')) {
       resetGame()
     }
   }
 
   return (
-    <header className="border-b border-emerald-300/10 bg-[#07100d]/95 px-4 py-4 backdrop-blur md:px-6">
-      <div className="mx-auto flex max-w-[1800px] flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+    <header className="h-[76px] border-b border-white/70 bg-white/75 px-3 py-2.5 backdrop-blur md:px-4">
+      <div className="mx-auto flex h-full max-w-[1780px] items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-emerald-300/20 bg-emerald-400/10 text-emerald-200">
-            <Sprout className="h-6 w-6" aria-hidden="true" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-lime-300 via-emerald-300 to-cyan-300 text-emerald-950 shadow-sm">
+            <Sprout className="h-7 w-7" aria-hidden="true" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white md:text-3xl">AgroDrone Idle</h1>
-            <p className="text-sm text-slate-400">
-              Smart farm command center
+            <h1 className="text-xl font-black text-slate-950 md:text-2xl">AgroDrone Idle</h1>
+            <p className="text-xs font-medium text-slate-500">
+              Centro agrícola inteligente
               {marketMultiplier > 1 ? (
-                <span className="ml-2 rounded border border-amber-300/25 bg-amber-400/10 px-2 py-0.5 text-amber-100">
-                  Wheat demand +10%
+                <span className="ml-2 rounded-full border border-amber-200 bg-amber-100 px-2 py-0.5 text-amber-800">
+                  Trigo +10%
                 </span>
               ) : null}
             </p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="hidden min-w-0 flex-wrap items-center justify-end gap-2 md:flex">
           <ResourceBadge
             icon={Coins}
-            label="Money"
+            label="Dinero"
             value={formatCurrency(resources.money)}
             tone="money"
           />
           <ResourceBadge
             icon={Wheat}
-            label="Crops"
+            label="Cosecha"
             value={formatNumber(resources.crops)}
             tone="crop"
           />
           <ResourceBadge
             icon={Droplets}
-            label="Water"
+            label="Agua"
             value={formatNumber(resources.water)}
             tone="water"
           />
           <ResourceBadge
             icon={Zap}
-            label="Energy"
+            label="Energía"
             value={formatNumber(resources.energy)}
             tone="energy"
           />
           <ResourceBadge
             icon={Database}
-            label="Agri data"
+            label="Datos"
             value={formatNumber(resources.agriData)}
             tone="data"
           />
           <button
             type="button"
             onClick={handleReset}
-            className="inline-flex h-[42px] items-center justify-center gap-2 rounded-lg border border-red-300/20 bg-red-500/10 px-3 text-sm font-semibold text-red-100 transition hover:border-red-300/40 hover:bg-red-500/20 focus:outline-none focus:ring-2 focus:ring-red-300/40"
-            title="Reset progress"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 px-3 text-sm font-bold text-rose-700 transition hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-300/50"
+            title="Reiniciar progreso"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            Reset
+            Reiniciar
           </button>
         </div>
       </div>

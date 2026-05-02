@@ -18,52 +18,52 @@ export function OperatorStation() {
   const fieldStatus = getFieldStatus(metrics)
 
   return (
-    <aside className="panel flex flex-col gap-4 p-4">
+    <aside className="panel flex flex-col gap-3 p-3 xl:row-span-2">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase text-slate-500">Operator station</p>
-          <h2 className="text-lg font-semibold text-white">Control desk</h2>
+          <p className="text-[10px] font-bold uppercase text-emerald-600">Estación</p>
+          <h2 className="text-lg font-black text-slate-950">Operador</h2>
         </div>
-        <Monitor className="h-5 w-5 text-cyan-200" aria-hidden="true" />
+        <Monitor className="h-5 w-5 text-cyan-600" aria-hidden="true" />
       </div>
 
       <OperatorVisual />
 
-      <div className="grid grid-cols-2 gap-3 text-sm">
-        <div className="rounded-lg border border-slate-700/70 bg-slate-900/60 p-3">
-          <div className="flex items-center gap-2 text-slate-400">
+      <div className="grid grid-cols-2 gap-2 text-sm">
+        <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-3">
+          <div className="flex items-center gap-2 text-slate-500">
             <RadioTower className="h-4 w-4" aria-hidden="true" />
-            Center
+            Centro
           </div>
-          <div className="mt-1 text-lg font-semibold text-white">Lv. {controlCenterLevel}</div>
+          <div className="mt-1 text-lg font-black text-emerald-800">Nv. {controlCenterLevel}</div>
         </div>
-        <div className="rounded-lg border border-slate-700/70 bg-slate-900/60 p-3">
-          <div className="flex items-center gap-2 text-slate-400">
+        <div className="rounded-2xl border border-amber-100 bg-amber-50 p-3">
+          <div className="flex items-center gap-2 text-slate-500">
             <Activity className="h-4 w-4" aria-hidden="true" />
-            Income
+            Ingreso
           </div>
-          <div className="mt-1 text-lg font-semibold text-emerald-100">
+          <div className="mt-1 text-lg font-black text-amber-800">
             {formatCurrency(incomePerSecond)}/s
           </div>
         </div>
       </div>
 
-      <div className="rounded-lg border border-slate-700/70 bg-slate-900/60 p-3">
+      <div className="rounded-2xl border border-lime-100 bg-lime-50 p-3">
         <div className="mb-2 flex items-center justify-between text-sm">
-          <span className="text-slate-400">Field status</span>
-          <span className="font-semibold text-emerald-100">{fieldStatus}</span>
+          <span className="font-medium text-slate-500">Campo</span>
+          <span className="font-bold text-lime-800">{fieldStatus}</span>
         </div>
-        <div className="grid grid-cols-3 gap-2 text-center text-xs text-slate-400">
+        <div className="grid grid-cols-3 gap-2 text-center text-xs text-slate-500">
           <div>
-            <div className="text-base font-semibold text-white">{Math.round(metrics.averageHealth)}%</div>
-            Health
+            <div className="text-base font-black text-slate-950">{Math.round(metrics.averageHealth)}%</div>
+            Salud
           </div>
           <div>
-            <div className="text-base font-semibold text-white">{Math.round(metrics.averageMoisture)}%</div>
-            Moisture
+            <div className="text-base font-black text-slate-950">{Math.round(metrics.averageMoisture)}%</div>
+            Humedad
           </div>
           <div>
-            <div className="text-base font-semibold text-white">{drones.length}</div>
+            <div className="text-base font-black text-slate-950">{drones.length}</div>
             Drones
           </div>
         </div>
@@ -72,10 +72,10 @@ export function OperatorStation() {
       <button
         type="button"
         onClick={analyzeField}
-        className="inline-flex items-center justify-center gap-2 rounded-lg border border-cyan-300/20 bg-cyan-400/10 px-4 py-3 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/40 hover:bg-cyan-400/20 focus:outline-none focus:ring-2 focus:ring-cyan-300/40"
+        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-500 px-4 py-2.5 text-sm font-black text-white shadow-sm transition hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-300/60"
       >
         <BrainCircuit className="h-4 w-4" aria-hidden="true" />
-        Analyze field with AI
+        Analizar con IA
       </button>
 
       <AdvisorPanel recommendation={advisorRecommendation} />
