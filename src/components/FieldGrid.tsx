@@ -1,4 +1,5 @@
 import { Map, Sprout } from 'lucide-react'
+import { playSound } from '../services/soundService'
 import { useGameStore } from '../store/gameStore'
 import { PlotCard } from './PlotCard'
 
@@ -30,7 +31,10 @@ export function FieldGrid() {
             key={plot.id}
             plot={plot}
             selected={plot.id === selectedPlotId}
-            onSelect={() => selectPlot(plot.id)}
+            onSelect={() => {
+              playSound('click')
+              selectPlot(plot.id)
+            }}
           />
         ))}
       </div>

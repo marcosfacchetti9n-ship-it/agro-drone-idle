@@ -14,6 +14,7 @@ import {
   ACTION_RESOURCE_COSTS,
   AUTOMATION_INTERVALS,
   CROP_SELL_PRICE,
+  HARVEST_MIN_GROWTH,
   MAX_EVENTS,
 } from './balancing'
 import {
@@ -59,6 +60,7 @@ function makeEvent(event: EventDraft): GameEvent {
 }
 
 export function appendEvents(events: GameEvent[], drafts: EventDraft[]): GameEvent[] {
+  if (drafts.length === 0) return events
   return [...drafts.map(makeEvent).reverse(), ...events].slice(0, MAX_EVENTS)
 }
 
@@ -153,11 +155,11 @@ export function performDroneAction(
     }
   }
 
-  if (action === 'harvest' && plot.growth < 85) {
+  if (action === 'harvest' && plot.growth < HARVEST_MIN_GROWTH) {
     return {
       ...state,
       events: appendEvents(state.events, [
-        { type: 'warning', message: `${plot.name} necesita 85% de crecimiento para cosechar.` },
+        { type: 'warning', message: `${plot.name} necesita ${HARVEST_MIN_GROWTH}% de crecimiento para cosechar.` },
       ]),
     }
   }
@@ -168,7 +170,7 @@ export function performDroneAction(
 
   const plots = updatePlot(state.plots, plot.id, (currentPlot) => {
     if (action === 'scan') {
-      resources = addResources(resources, { agriData: Math.round(10 * multiplier) })
+      resources = addResources(resources, { agriData: Math.round(18 * multiplier) })
       event = {
         type: 'success',
         message: `${drone.name} escaneó ${currentPlot.name} y generó datos.`,
@@ -188,8 +190,8 @@ export function performDroneAction(
       }
       return {
         ...currentPlot,
-        moisture: clamp(currentPlot.moisture + 22 * multiplier),
-        cropHealth: clamp(currentPlot.cropHealth + 3.5 * multiplier),
+        moisture: clamp(currentPlot.moisture + 30 * multiplier),
+        cropHealth: clamp(currentPlot.cropHealth + 5 * multiplier),
         status: ACTION_PLOT_STATUS[action],
       }
     }
@@ -201,8 +203,8 @@ export function performDroneAction(
       }
       return {
         ...currentPlot,
-        pestLevel: clamp(currentPlot.pestLevel - 28 * multiplier),
-        cropHealth: clamp(currentPlot.cropHealth + 2 * multiplier),
+        pestLevel: clamp(currentPlot.pestLevel - 38 * multiplier),
+        cropHealth: clamp(currentPlot.cropHealth + 3 * multiplier),
         status: ACTION_PLOT_STATUS[action],
       }
     }
@@ -264,7 +266,7 @@ export function tickPlots(plots: Plot[], controlCenterLevel: number): Plot[] {
 
 export function tickDrones(drones: Drone[], controlCenterLevel: number): Drone[] {
   return drones.map((drone) => {
-    const recoverRate = 1.5 + controlCenterLevel * 0.25
+    const recoverRate = 4 + controlCenterLevel * 0.65
     const canRecover = drone.status === 'idle' || drone.status === 'charging'
     const nextBattery = canRecover
       ? clamp(drone.battery + recoverRate, 0, drone.maxBattery)
@@ -286,14 +288,14 @@ export function runAutomation(state: GameState): AutomationResult {
 
   if (state.automation.watering && state.tick % AUTOMATION_INTERVALS.watering === 0) {
     const target = [...plots].sort((a, b) => a.moisture - b.moisture)[0]
-    const cost = { water: 5, energy: 3 }
+    const cost = { water: 4, energy: 2 }
 
     if (target && target.moisture < 58 && canAfford(resources, cost)) {
       resources = spendResources(resources, cost)
       plots = updatePlot(plots, target.id, (plot) => ({
         ...plot,
-        moisture: clamp(plot.moisture + 14),
-        cropHealth: clamp(plot.cropHealth + 1.4),
+        moisture: clamp(plot.moisture + 20),
+        cropHealth: clamp(plot.cropHealth + 2.2),
         status: 'watering',
       }))
       eventDrafts.push({
@@ -304,7 +306,7 @@ export function runAutomation(state: GameState): AutomationResult {
   }
 
   if (state.automation.scanning && state.tick % AUTOMATION_INTERVALS.scanning === 0) {
-    resources = addResources(resources, { agriData: 5 + state.controlCenterLevel * 2 })
+    resources = addResources(resources, { agriData: 10 + state.controlCenterLevel * 3 })
     eventDrafts.push({
       type: 'ai',
       message: 'Escaneo automático subió nuevos datos del cultivo.',

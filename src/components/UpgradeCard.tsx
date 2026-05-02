@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import { CheckCircle2, Lock, type LucideIcon } from 'lucide-react'
+import { playSound } from '../services/soundService'
 import type { Upgrade } from '../types/game'
 import { formatCost } from '../utils/formatters'
 
@@ -41,7 +42,10 @@ export function UpgradeCard({ upgrade, icon: Icon, affordable, onBuy }: UpgradeC
       <button
         type="button"
         disabled={disabled}
-        onClick={onBuy}
+        onClick={() => {
+          playSound('upgrade')
+          onBuy()
+        }}
         className={clsx(
           'mt-1.5 flex w-full items-center justify-center rounded-xl border px-2 py-1 text-xs font-black transition focus:outline-none focus:ring-2 focus:ring-emerald-300/50',
           disabled

@@ -1,5 +1,6 @@
 import { Activity, BrainCircuit, Monitor, RadioTower } from 'lucide-react'
 import { useMemo } from 'react'
+import { playSound } from '../services/soundService'
 import { useGameStore } from '../store/gameStore'
 import { getFieldMetrics, getFieldStatus } from '../utils/calculations'
 import { formatCurrency } from '../utils/formatters'
@@ -71,7 +72,10 @@ export function OperatorStation() {
 
       <button
         type="button"
-        onClick={analyzeField}
+        onClick={() => {
+          playSound('ai')
+          analyzeField()
+        }}
         className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-500 px-4 py-2.5 text-sm font-black text-white shadow-sm transition hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-300/60"
       >
         <BrainCircuit className="h-4 w-4" aria-hidden="true" />

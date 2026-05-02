@@ -311,12 +311,12 @@ export const useGameStore = create<GameStore>((set) => ({
         resources: {
           ...state.resources,
           energy: clamp(
-            state.resources.energy + 0.45 + state.controlCenterLevel * 0.15,
+            state.resources.energy + 1.2 + state.controlCenterLevel * 0.35,
             0,
             getEnergyCap(state.controlCenterLevel),
           ),
           water: clamp(
-            state.resources.water + 0.12 + state.controlCenterLevel * 0.04,
+            state.resources.water + 0.4 + state.controlCenterLevel * 0.12,
             0,
             getWaterCap(state.controlCenterLevel),
           ),
@@ -338,15 +338,15 @@ export const useGameStore = create<GameStore>((set) => ({
       nextState = automationResult.gameState
       const eventDrafts = [...automationResult.eventDrafts]
 
-      if (tick % 14 === 0) {
+      if (tick % 10 === 0) {
         eventDrafts.push(generateFarmEvent(nextState))
       }
 
-      if (tick % 30 === 0) {
+      if (tick % 20 === 0) {
         nextState.advisorRecommendation = generateAdvisorRecommendation(nextState)
       }
 
-      if (tick % 55 === 0 && Math.random() < 0.35 && nextState.marketBoostTicksRemaining === 0) {
+      if (tick % 40 === 0 && Math.random() < 0.42 && nextState.marketBoostTicksRemaining === 0) {
         nextState.marketMultiplier = 1.1
         nextState.marketBoostTicksRemaining = 60
         eventDrafts.push({

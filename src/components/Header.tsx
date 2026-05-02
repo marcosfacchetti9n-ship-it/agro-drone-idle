@@ -1,4 +1,6 @@
-import { Coins, Database, Droplets, RotateCcw, Sprout, Wheat, Zap } from 'lucide-react'
+import { useState } from 'react'
+import { Coins, Database, Droplets, RotateCcw, Sprout, Volume2, VolumeX, Wheat, Zap } from 'lucide-react'
+import { isSoundEnabled, playSound, setSoundEnabled } from '../services/soundService'
 import { useGameStore } from '../store/gameStore'
 import { formatCurrency, formatNumber } from '../utils/formatters'
 import { ResourceBadge } from './ResourceBadge'
@@ -7,9 +9,18 @@ export function Header() {
   const resources = useGameStore((state) => state.resources)
   const marketMultiplier = useGameStore((state) => state.marketMultiplier)
   const resetGame = useGameStore((state) => state.resetGame)
+  const [soundOn, setSoundOn] = useState(() => isSoundEnabled())
+
+  function handleSoundToggle() {
+    const nextValue = !soundOn
+    setSoundOn(nextValue)
+    setSoundEnabled(nextValue)
+    if (nextValue) playSound('success')
+  }
 
   function handleReset() {
     if (window.confirm('¿Reiniciar el progreso de AgroDrone Idle? Esta acción no se puede deshacer.')) {
+      playSound('reset')
       resetGame()
     }
   }
@@ -65,6 +76,15 @@ export function Header() {
             value={formatNumber(resources.agriData)}
             tone="data"
           />
+          <button
+            type="button"
+            onClick={handleSoundToggle}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-200 bg-cyan-50 text-cyan-700 transition hover:bg-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-300/50"
+            title={soundOn ? 'Silenciar sonidos' : 'Activar sonidos'}
+            aria-label={soundOn ? 'Silenciar sonidos' : 'Activar sonidos'}
+          >
+            {soundOn ? <Volume2 className="h-4 w-4" aria-hidden="true" /> : <VolumeX className="h-4 w-4" aria-hidden="true" />}
+          </button>
           <button
             type="button"
             onClick={handleReset}

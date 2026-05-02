@@ -1,5 +1,7 @@
 import clsx from 'clsx'
 import { Activity, BrainCircuit, CheckCircle2, Info, TriangleAlert } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { playSound } from '../services/soundService'
 import { useGameStore } from '../store/gameStore'
 import type { EventType } from '../types/game'
 import { formatTimestamp } from '../utils/formatters'
@@ -27,6 +29,20 @@ const eventLabels: Record<EventType, string> = {
 
 export function EventFeed() {
   const events = useGameStore((state) => state.events)
+  const latestEventId = events[0]?.id
+  const previousEventId = useRef(latestEventId)
+
+  useEffect(() => {
+    if (!latestEventId || previousEventId.current === latestEventId) return
+
+    const latestEvent = events[0]
+    if (latestEvent.type === 'warning') playSound('warning')
+    else if (latestEvent.type === 'ai') playSound('ai')
+    else if (latestEvent.type === 'success') playSound('success')
+    else playSound('click')
+
+    previousEventId.current = latestEventId
+  }, [events, latestEventId])
 
   return (
     <section className="panel flex flex-col p-3 xl:col-start-3 xl:row-start-2">

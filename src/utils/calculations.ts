@@ -100,7 +100,7 @@ export function calculateGrowthDelta(plot: Plot, controlCenterLevel: number): nu
   const pestFactor = clamp(1 - plot.pestLevel / 130, 0.15, 1)
   const centerBoost = 1 + (controlCenterLevel - 1) * 0.04
 
-  return 0.62 * healthFactor * moistureFactor * pestFactor * centerBoost
+  return 1.55 * healthFactor * moistureFactor * pestFactor * centerBoost
 }
 
 export function calculateHealthDelta(plot: Plot): number {
@@ -134,7 +134,7 @@ export function isDroneAvailable(drone: Drone): boolean {
 }
 
 export function calculateHarvestYield(plot: Plot, multiplier: number): { crops: number; money: number } {
-  const cropYield = Math.round((16 + plot.cropHealth * 0.26 + plot.growth * 0.08) * multiplier)
+  const cropYield = Math.round((22 + plot.cropHealth * 0.34 + plot.growth * 0.14) * multiplier)
   return {
     crops: cropYield,
     money: Math.round(cropYield * CROP_SELL_PRICE),
@@ -151,7 +151,7 @@ export function calculateIncomePerSecond(state: GameState): number {
   const pestFactor = clamp(1 - metrics.averagePestLevel / 180, 0.25, 1)
   const centerFactor = 1 + (state.controlCenterLevel - 1) * 0.07
   const fleetFactor = Math.min(state.drones.length, 12)
-  const passiveIncome = healthFactor * growthFactor * pestFactor * centerFactor * fleetFactor * 0.5
+  const passiveIncome = healthFactor * growthFactor * pestFactor * centerFactor * fleetFactor * 1.15
 
   return Number((passiveIncome * state.marketMultiplier).toFixed(2))
 }

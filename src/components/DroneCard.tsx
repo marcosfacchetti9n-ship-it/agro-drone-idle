@@ -1,6 +1,7 @@
 import { BatteryCharging, Droplets, ScanLine, ShieldCheck, Wheat } from 'lucide-react'
+import { playSound } from '../services/soundService'
 import type { Drone, FarmAction, Plot, Resources } from '../types/game'
-import { ACTION_BATTERY_COSTS, ACTION_RESOURCE_COSTS } from '../utils/balancing'
+import { ACTION_BATTERY_COSTS, ACTION_RESOURCE_COSTS, HARVEST_MIN_GROWTH } from '../utils/balancing'
 import { canAfford, isDroneAvailable } from '../utils/calculations'
 import { formatPercent } from '../utils/formatters'
 
@@ -37,7 +38,7 @@ function batteryWidth(drone: Drone): string {
 function getActionHint(drone: Drone, selectedPlot?: Plot): string {
   if (!selectedPlot) return 'Elegí una parcela.'
   if (!isDroneAvailable(drone)) return 'Tarea en curso.'
-  if (selectedPlot.growth < 85) return 'Cosecha desde 85%.'
+  if (selectedPlot.growth < HARVEST_MIN_GROWTH) return `Cosecha desde ${HARVEST_MIN_GROWTH}%.`
   return 'Listo para operar.'
 }
 
@@ -59,7 +60,7 @@ export function DroneCard({
   const canScan = canRun('scan')
   const canWater = canRun('water')
   const canPest = canRun('pestControl')
-  const canHarvest = canRun('harvest') && Boolean(selectedPlot && selectedPlot.growth >= 85)
+  const canHarvest = canRun('harvest') && Boolean(selectedPlot && selectedPlot.growth >= HARVEST_MIN_GROWTH)
 
   return (
     <article className="rounded-2xl border border-white bg-white/80 p-2.5 shadow-sm">
@@ -93,7 +94,10 @@ export function DroneCard({
           title="Escanear parcela"
           aria-label="Escanear parcela"
           disabled={!canScan}
-          onClick={onScan}
+          onClick={() => {
+            playSound('action')
+            onScan()
+          }}
           className="drone-action"
         >
           <ScanLine className="h-4 w-4" aria-hidden="true" />
@@ -103,7 +107,10 @@ export function DroneCard({
           title="Regar parcela"
           aria-label="Regar parcela"
           disabled={!canWater}
-          onClick={onWater}
+          onClick={() => {
+            playSound('action')
+            onWater()
+          }}
           className="drone-action"
         >
           <Droplets className="h-4 w-4" aria-hidden="true" />
@@ -113,7 +120,10 @@ export function DroneCard({
           title="Controlar plaga"
           aria-label="Controlar plaga"
           disabled={!canPest}
-          onClick={onPestControl}
+          onClick={() => {
+            playSound('action')
+            onPestControl()
+          }}
           className="drone-action"
         >
           <ShieldCheck className="h-4 w-4" aria-hidden="true" />
@@ -123,7 +133,10 @@ export function DroneCard({
           title="Cosechar parcela"
           aria-label="Cosechar parcela"
           disabled={!canHarvest}
-          onClick={onHarvest}
+          onClick={() => {
+            playSound('action')
+            onHarvest()
+          }}
           className="drone-action"
         >
           <Wheat className="h-4 w-4" aria-hidden="true" />

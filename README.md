@@ -12,7 +12,8 @@ Sección preparada para agregar capturas del panel principal una vez desplegado.
 - Recursos visibles: dinero, cosecha, agua, energía y datos agrícolas.
 - Mapa 3x3 de parcelas con salud, humedad, plagas y crecimiento.
 - Drones con acciones claras: escanear, regar, controlar plaga y cosechar.
-- Bucle idle por segundo con crecimiento, degradación de humedad, presión de plagas, ingreso pasivo y recuperación de batería.
+- Bucle idle rápido por segundo con crecimiento, degradación de humedad, presión de plagas, ingreso pasivo y recuperación de batería.
+- Sonidos generados en navegador para clics, acciones, mejoras, alertas y eventos.
 - Mejoras compactas para comprar drones, subir eficiencia, batería, centro de control y automatizaciones.
 - Eventos y recomendaciones del Asesor IA en modo simulado.
 - Guardado automático en LocalStorage, carga al iniciar y reinicio con confirmación.
